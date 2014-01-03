@@ -83,7 +83,6 @@ bool IOsphereIntersect(vec3 vPos,vec3 vRay,float Radius,inout vec3 vIntersect,in
 }
 
 void main(void) {
-	vColor.rgb = vec3(0.0);
 	vec3 vLightCol = gl_LightSource[1].diffuse.rgb;
 	vec3 Hit;
 	float AtmosDist = 0.0;
@@ -134,17 +133,20 @@ void main(void) {
 	} else {
 		Directional = 1.0;
 	}*/
+
+        vec4 outColor = vColor;
+
 	vec3 vRayleigh = 2.0 * Scattering * fScatter  *  smoothstep(-0.25,.25, Occlude);
 	vec3 ivRayleigh = 2.0 * Scattering * fScatter  *  smoothstep(.25,-0.25, Occlude);
-	vColor.rgb += vRayleigh;
+	outColor.rgb += vRayleigh;
 	vLightCol -= ivRayleigh;
-	vColor.rgb += (vLightCol * fScatter * Directional );
+	outColor.rgb += (vLightCol * fScatter * Directional );
 
 
 	//vColor.a = fScatter * Directional;
 	//vColor.a = fOpacity * Directional;
-	vColor.a = fOpacity * Directional;
-	vColor.a *= 1.0 * smoothstep(-0.25,0.05, Occlude);
+	outColor.a = fOpacity * Directional;
+	outColor.a *= 1.0 * smoothstep(-0.25,0.05, Occlude);
 	//vColor.a= 1.0;	
 
 // SAMPLING
@@ -191,13 +193,13 @@ for (int i=0;i < iSamples;i++) {
 }	
 
 	fDensity /= fSamples;
-	vColor.a = fDensity * (1.0-fOcclude);
+	outColor.a = fDensity * (1.0-fOcclude);
 	//vColor.a = 1.0;
-	vColor.rgb = vScatter.rgb;
-	vColor.rgb /= vColor.a;
+	outColor.rgb = vScatter.rgb;
+	outColor.rgb /= vColor.a;
 */ 
 
-	gl_FragColor = vColor;	
+	gl_FragColor = outColor;	
 }
 
 
