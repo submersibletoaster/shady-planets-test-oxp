@@ -170,7 +170,7 @@ void main(void)
 
 
 	//float parallax = 1.0 - depth * parallaxScale;
-	normal +=  normal * waveletVec * 0.3 ;
+	normal +=  normal * waveletVec.rgb * 0.3 ;
 
 	//vec3 ParallaxCubeTexCoords =	
 	//vec3 ParallaxCubeTexCoords =  vCubeTexCoords + ( parallaxScale * eyeVector ) ;
@@ -235,10 +235,10 @@ void main(void)
   ---------------------------------------------------------------- */
 
 	float Directional = dot(eyeVector,vCubeTexCoords);
-	Directional = 1.0 - smoothstep( -1, -0.8 , Directional );
+	Directional = 1.0 - smoothstep( -1.0, -0.8 , Directional );
 	
 	vec4 specularLight = vec4(0);
-	float exponent = 20;
+	float exponent = 20.0;
 	specularLight += CalcSpecularLight(
 				lightVector, eyeVector,
 				exponent, 
@@ -262,7 +262,7 @@ void main(void)
 	// Parallax modified CubeTexCoords
 
 
-	//diffuseMapColor.rgb =  diffuseMapColor.rgb + diffuseLight * (waveletVec.rgb  - vec3(0.5) );	
+	//diffuseMapColor.rgb =  diffuseMapColor.rgb + diffuseLight * (waveletVec.rgb  - vec3(0.5) );
 	
 	diffuseMapColor.a = 1.0 - ( (1.0 - diffuseMapColor.r ) * alphaScale );
 	
@@ -284,3 +284,4 @@ void main(void)
 	
 	gl_FragColor = totalColor;
 }
+
